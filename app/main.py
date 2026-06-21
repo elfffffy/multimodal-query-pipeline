@@ -9,6 +9,8 @@ app = FastAPI(title="Multimodal Query Pipeline")
 async def root():
     return {"status": "ok"}
 
+
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
-    return ChatResponse(answer=f"받은 메시지: {request.message}", route="none")
+    answer, route = await route_and_handle(request.message, request.image_base64)
+    return ChatResponse(answer=answer, route=route)
