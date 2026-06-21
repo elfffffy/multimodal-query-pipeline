@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 faiss_index/
 data/raw/
+data/processed/
 .DS_Store
 test_*.py
 MY_*.md
