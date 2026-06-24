@@ -65,7 +65,8 @@ with gr.Blocks(title="영화 질문 AI") as demo:
         if not message.strip():
             return history, ""
         answer = chat(message, image, history)
-        history.append((message, answer))
+        history.append({"role": "user", "content": message})
+        history.append({"role": "assistant", "content": answer})
         return history, ""
 
     send_btn.click(respond, [text_input, image_input, chatbot], [chatbot, text_input])
