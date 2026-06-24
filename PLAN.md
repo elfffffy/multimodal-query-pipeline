@@ -4,7 +4,7 @@
 |------|------|
 | 백엔드 API | FastAPI |
 | AI 파이프라인 | LangChain |
-| VLM | Gemini 1.5 Flash (무료 티어) |
+| VLM | Gemini 2.5 Flash (무료 티어) |
 | 벡터 DB | FAISS |
 | 프론트 UI | Gradio |
 | 배포 | HuggingFace Spaces |
