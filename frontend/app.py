@@ -4,13 +4,6 @@ import gradio as gr
 
 API_URL = "http://localhost:8000/chat"
 
-ROUTE_LABEL = {
-    "sql":    "🗄️ SQL — DB에서 직접 조회했어요",
-    "pandas": "📊 Pandas — 데이터를 통계 분석했어요",
-    "rag":    "📚 RAG — 문서에서 관련 내용을 찾았어요",
-    "vlm":    "🖼️ VLM — 이미지를 분석했어요",
-}
-
 
 def chat(message: str, image, history: list):
     image_base64 = None
@@ -28,10 +21,8 @@ def chat(message: str, image, history: list):
         data = resp.json()
 
         answer = data["answer"]
-        route = data["route"]
-        label = ROUTE_LABEL.get(route, route)
 
-        return f"{answer}\n\n---\n*{label}*"
+        return f"{answer}"
 
     except requests.exceptions.ConnectionError:
         return "❌ 백엔드 서버에 연결할 수 없어요."
@@ -39,38 +30,53 @@ def chat(message: str, image, history: list):
         return f"❌ 오류가 발생했어요: {e}"
 
 
-with gr.Blocks(title="영화 질문 AI") as demo:
-    gr.Markdown("# 🎬 영화 질문 AI\n텍스트 질문 또는 영화 포스터 이미지를 업로드해서 질문하세요.")
+with gr.Blocks(
+    title="영화 질문 AI",
+    theme=gr.themes.Soft(
+        primary_hue="violet",
+        secondary_hue="sky",
+        neutral_hue="slate",
+        font=gr.themes.GoogleFont("Noto Sans KR"),
+    ),
+) as demo:
+    gr.Markdown("# 🎬 영화로운 AI \n 영화 포스터와 함께 궁금한 점을 물어보세요!")
 
     with gr.Row():
         with gr.Column(scale=1):
             image_input = gr.Image(
-                label="이미지 첨부 (선택)",
+                label="영화 포스터 첨부 (선택)",
                 type="filepath",
-                height=200,
+                height=550,
             )
         with gr.Column(scale=2):
-            chatbot = gr.Chatbot(label="대화", height=400)
+            with gr.Row():
+                chatbot = gr.Chatbot(label="대화 내역", height=450)
 
-    with gr.Row():
-        text_input = gr.Textbox(
-            placeholder="질문을 입력하세요...",
-            label="",
-            scale=5,
-            container=False,
-        )
-        send_btn = gr.Button("전송", scale=1, variant="primary")
+            with gr.Row():
+                text_input = gr.Textbox(
+                    placeholder="질문을 입력하세요...",
+                    label="",
+                    scale=5,
+                    container=False,
+                )
+            send_btn = gr.Button("전송", scale=1, variant="primary")
 
     def respond(message, image, history):
         if not message.strip():
-            return history, ""
+            return history, "", image
         answer = chat(message, image, history)
+        if image:
+            import mimetypes
+            mime = mimetypes.guess_type(image)[0] or "image/jpeg"
+            history.append({"role": "user", "content": {"path": image, "mime_type": mime}})
         history.append({"role": "user", "content": message})
         history.append({"role": "assistant", "content": answer})
-        return history, ""
+        return history, "", None
 
-    send_btn.click(respond, [text_input, image_input, chatbot], [chatbot, text_input])
-    text_input.submit(respond, [text_input, image_input, chatbot], [chatbot, text_input])
+    send_btn.click(respond, [text_input, image_input, chatbot], [chatbot, text_input, image_input])
+    text_input.submit(
+        respond, [text_input, image_input, chatbot], [chatbot, text_input, image_input]
+    )
 
 
 if __name__ == "__main__":
