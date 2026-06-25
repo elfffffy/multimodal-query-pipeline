@@ -11,8 +11,6 @@
 
 ![Architecture](assets/overall.png)
 
-````
-
 <br>
 
 ## 🛠️ Tech Stack
