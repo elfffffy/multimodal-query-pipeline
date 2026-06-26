@@ -84,3 +84,8 @@ python frontend/app.py
 - (영화 포스터 이미지 첨부) 이 영화 장르가 뭐야?
 
 ![VLM Demo](assets/demo_vlm.gif)
+
+
+## 📌 참고
+[RAG란? - 검색해서 답하는 AI 만들기](https://elffffy.tistory.com/44)
+[VLM이란? - 이미지를 이해하는 AI 만들기](https://elffffy.tistory.com/46)
