@@ -87,5 +87,5 @@ python frontend/app.py
 
 
 ## 📌 참고
-[RAG란? - 검색해서 답하는 AI 만들기](https://elffffy.tistory.com/44)
-[VLM이란? - 이미지를 이해하는 AI 만들기](https://elffffy.tistory.com/46)
+- [RAG란? - 검색해서 답하는 AI 만들기](https://elffffy.tistory.com/44)
+- [VLM이란? - 이미지를 이해하는 AI 만들기](https://elffffy.tistory.com/46)
